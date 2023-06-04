@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Card, Spinner } from "react-bootstrap";
 import { fetchComments } from "../store/http";
 import { CommentI } from "../utils/postConsts";
+import { useFetching } from "../hooks/useFetching";
 
 interface CommentsProp {
   postId: string;
@@ -9,16 +10,15 @@ interface CommentsProp {
 
 const Comments: FC<CommentsProp> = ({ postId }) => {
   const [comments, setComments] = useState<CommentI[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [getComments, isLoading, error] = useFetching(
+    async (postId: string) => {
+      fetchComments(postId as string).then((comments) => setComments(comments));
+    }
+  );
 
   useEffect(() => {
-    setIsLoading(true);
-    const timeout = setTimeout(() => {
-      fetchComments(postId).then((comments) => setComments(comments));
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timeout);
+    getComments(postId);
   }, []);
 
   return (

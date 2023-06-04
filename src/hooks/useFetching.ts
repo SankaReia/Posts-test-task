@@ -1,15 +1,16 @@
 import { useState } from "react";
 
-export const useFetching = (callback: (limit: number, page: number)=> Promise<void>) => {
+
+
+export const useFetching = (callback: any) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const fetching = async (limit: number, pages: number) =>{
-
+  const fetching = async (a: number | string, b?: number) =>{
     try {
         setIsLoading(true)
         setTimeout(()=> {
-          callback(limit, pages); 
+          callback(a, b); 
           setIsLoading(false)
         }, 1000)
 
