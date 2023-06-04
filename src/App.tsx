@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
+import { Route, Routes } from "react-router-dom";
+import PostsPage from "./pages/PostsPage";
+import UserPage from "./pages/UserPage";
+import AboutMe from "./pages/AboutMe";
+import LayOut from "./components/LayOut";
+
+const App: FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route element={<LayOut />}>
+        <Route path="/" element={<PostsPage />} />
+        <Route path="/aboutMe" element={<AboutMe />} />
+        <Route path="/user/:id" element={<UserPage />} />
+      </Route>
+    </Routes>
   );
-}
+};
 
 export default App;
