@@ -21,7 +21,9 @@ const PostItem: FC<PostItemProp> = ({ post }) => {
           width="80"
           onClick={() => navigate("/user/" + post.userId)}
         />
-        <Card.Title>{post.title}</Card.Title>
+        <Card.Title>
+          {post.id}.{post.title}
+        </Card.Title>
       </Stack>
       <Card.Body>
         <Card.Text>{post.body}</Card.Text>

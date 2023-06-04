@@ -1,8 +1,13 @@
 import axios from "axios"
 
-export const fetchPosts = async () => {
+export const fetchPosts = async (limit = 10, page = 1) => {
     try {
-        const {data} = await axios.get("https://jsonplaceholder.typicode.com/posts")
+        const data = await axios.get("https://jsonplaceholder.typicode.com/posts", {
+            params: {
+                _limit: limit,
+                _page: page
+            }
+        })
         return data
     } catch (error) {
         console.log(error)

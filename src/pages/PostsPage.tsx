@@ -4,7 +4,9 @@ import PostItem from "../components/PostItem";
 import { fetchPosts } from "../store/http";
 import PostFilter from "../components/PostFilter";
 import { FilterI, PostI } from "../utils/postConsts";
-import { Spinner } from "react-bootstrap";
+import { Pagination, Spinner } from "react-bootstrap";
+import { getPageCount, getPagesArray } from "../utils/pages";
+import { useFetching } from "../hooks/useFetching";
 
 const PostsPage: FC = () => {
   const [posts, setPosts] = useState<PostI[]>([]);
@@ -12,19 +14,31 @@ const PostsPage: FC = () => {
     sort: "",
     query: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [totalPages, setTotalPages] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
 
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+  let pagesArr = getPagesArray(totalPages);
+
+  const [getPosts, isLoading, error] = useFetching(
+    async (limit: number, page: number) => {
+      const response = await fetchPosts(limit, page);
+      setPosts(response?.data);
+      const totalCount = response?.headers["x-total-count"];
+      setTotalPages(getPageCount(totalCount, limit));
+    }
+  );
 
   useEffect(() => {
-    setIsLoading(true);
-    const timeout = setTimeout(() => {
-      fetchPosts().then((posts) => setPosts(posts));
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timeout);
+    getPosts(limit, page);
   }, []);
+
+  const changePage = (page: number) => {
+    setPage(page);
+    getPosts(limit, page);
+  };
 
   return (
     <>
@@ -37,9 +51,21 @@ const PostsPage: FC = () => {
           </Spinner>
         </div>
       ) : (
-        sortedAndSearchedPosts.map((post) => (
-          <PostItem key={post.id} post={post} />
-        ))
+        <div>
+          {sortedAndSearchedPosts.map((post) => (
+            <PostItem key={post.id} post={post} />
+          ))}
+
+          <Pagination
+            style={{ marginTop: 20, display: "flex", justifyContent: "center" }}
+          >
+            {pagesArr.map((page) => (
+              <Pagination.Item key={page} onClick={() => changePage(page)}>
+                {page}
+              </Pagination.Item>
+            ))}
+          </Pagination>
+        </div>
       )}
     </>
   );
