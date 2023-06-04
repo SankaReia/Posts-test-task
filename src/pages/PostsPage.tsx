@@ -1,9 +1,10 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import { usePosts } from "../hooks/usePosts";
 import PostItem from "../components/PostItem";
 import { fetchPosts } from "../store/http";
-import PostFilter, { FilterI } from "../components/PostFilter";
-import { usePosts } from "../hooks/usePosts";
-import { PostI } from "../utils/postConsts";
+import PostFilter from "../components/PostFilter";
+import { FilterI, PostI } from "../utils/postConsts";
+import { Spinner } from "react-bootstrap";
 
 const PostsPage: FC = () => {
   const [posts, setPosts] = useState<PostI[]>([]);
@@ -11,24 +12,36 @@ const PostsPage: FC = () => {
     sort: "",
     query: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
   useEffect(() => {
-    fetchPosts().then((posts) => setPosts(posts));
+    setIsLoading(true);
+    const timeout = setTimeout(() => {
+      fetchPosts().then((posts) => setPosts(posts));
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
-    <div>
+    <>
       <PostFilter filter={filter} setFilter={setFilter} />
-      {sortedAndSearchedPosts.length ? (
+
+      {isLoading ? (
+        <div style={{ textAlign: "center", marginTop: 100 }}>
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      ) : (
         sortedAndSearchedPosts.map((post) => (
           <PostItem key={post.id} post={post} />
         ))
-      ) : (
-        <h2 style={{ textAlign: "center", marginTop: 50 }}>Posts not found!</h2>
       )}
-    </div>
+    </>
   );
 };
 

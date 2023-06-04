@@ -1,10 +1,6 @@
 import { FC } from "react";
 import { Form, Stack } from "react-bootstrap";
-
-export interface FilterI {
-  sort: string;
-  query: string;
-}
+import { FilterI } from "../utils/postConsts";
 
 interface PostFilterProp {
   filter: FilterI;

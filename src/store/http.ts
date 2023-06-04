@@ -1,8 +1,12 @@
 import axios from "axios"
 
 export const fetchPosts = async () => {
-    const {data} = await axios.get("https://jsonplaceholder.typicode.com/posts")
-    return data
+    try {
+        const {data} = await axios.get("https://jsonplaceholder.typicode.com/posts")
+        return data
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 // export const fetchComments = async (postId: string) => {
@@ -11,6 +15,11 @@ export const fetchPosts = async () => {
 // }
 
 export const fetchComments = async (postId: string) => {
-    const {data} = await axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
-    return data
+    try {
+        const {data} = await axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
+        return data
+        
+    } catch (error) {
+        console.log(error)
+    }
 }
