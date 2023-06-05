@@ -19,3 +19,10 @@ export interface FilterI {
     sort: string;
     query: string;
 }
+
+export interface UserI {
+    id?: number
+    name?: string
+    username?: string,
+    email?: string
+}

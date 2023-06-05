@@ -1,19 +1,20 @@
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../hooks/useRedux";
-import { Spinner } from "react-bootstrap";
+import { Card, Spinner, Stack, Image } from "react-bootstrap";
 import PostItem from "../components/PostItem";
-import { getUserPosts } from "../store/reducers/userPostsReducer";
+import { getUser } from "../store/reducers/userReducer";
 import { useParams } from "react-router-dom";
+import userLogo from "../userLogo.png";
 
 const UserPage: FC = () => {
   const dispatch = useDispatch();
-  const { userPosts } = useTypedSelector((state) => state.userPostsReducer);
+  const { userPosts, user } = useTypedSelector((state) => state.userReducer);
   const { isLoadingPost } = useTypedSelector((state) => state.loadReducer);
   const { id } = useParams();
 
   useEffect(() => {
-    dispatch(getUserPosts(id));
+    dispatch(getUser(id));
   }, []);
 
   return (
@@ -25,11 +26,31 @@ const UserPage: FC = () => {
           </Spinner>
         </div>
       ) : (
-        <div>
-          {userPosts.map((post) => (
-            <PostItem key={post.id} post={post} />
-          ))}
-        </div>
+        <>
+          <Card
+            style={{ maxWidth: "800px", width: "100%" }}
+            className="p-2 mx-auto"
+          >
+            <Stack direction="horizontal" gap={2}>
+              <Image src={userLogo} width="200" />
+              <Stack gap={2}>
+                <Card.Title>email: {user.email}</Card.Title>
+                <Card.Body>
+                  <Card.Text>name: {user.name}</Card.Text>
+                  <Card.Text>username: {user.username}</Card.Text>
+                </Card.Body>
+              </Stack>
+            </Stack>
+          </Card>
+
+          <h2 style={{ textAlign: "center" }}>{user.name} posts:</h2>
+
+          <div>
+            {userPosts.map((post) => (
+              <PostItem key={post.id} post={post} />
+            ))}
+          </div>
+        </>
       )}
     </>
   );

@@ -1,9 +1,9 @@
 import { all } from "redux-saga/effects"
 import { postWatcher } from "./postSaga"
 import { commentWatcher } from "./commentSaga"
-import { userPostWatcher } from "./userPostSaga"
+import { userWatcher } from "./userSaga"
 
 
 export function* rootWatcher () {
-    yield all([postWatcher(), commentWatcher(), userPostWatcher()])
+    yield all([postWatcher(), commentWatcher(), userWatcher()])
 }

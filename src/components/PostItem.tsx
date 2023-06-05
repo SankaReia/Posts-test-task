@@ -27,6 +27,7 @@ const PostItem: FC<PostItemProp> = ({ post }) => {
         <Image
           src={userLogo}
           width="80"
+          style={{ cursor: "pointer" }}
           onClick={() => navigate("/user/" + post.userId)}
         />
         <Card.Title>
