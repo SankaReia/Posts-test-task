@@ -1,20 +1,21 @@
 import { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../hooks/useRedux";
-import { Card, Spinner, Stack, Image } from "react-bootstrap";
+import { Card, Spinner, Stack, Image, Button } from "react-bootstrap";
 import PostItem from "../components/PostItem";
 import { getUser } from "../store/reducers/userReducer";
-import { useParams } from "react-router-dom";
-import userLogo from "../userLogo.png";
+import { useNavigate, useParams } from "react-router-dom";
+import userLogo from "../img/userLogo.png";
 
 const UserPage: FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userPosts, user } = useTypedSelector((state) => state.userReducer);
   const { isLoadingPost } = useTypedSelector((state) => state.loadReducer);
   const { id } = useParams();
 
   useEffect(() => {
-    dispatch(getUser(id));
+    id && dispatch(getUser(id));
   }, []);
 
   return (
@@ -29,18 +30,23 @@ const UserPage: FC = () => {
         <>
           <Card
             style={{ maxWidth: "800px", width: "100%" }}
-            className="p-2 mx-auto"
+            className="p-2 mx-auto position-relative"
           >
             <Stack direction="horizontal" gap={2}>
               <Image src={userLogo} width="200" />
-              <Stack gap={2}>
+              <Stack>
                 <Card.Title>email: {user.email}</Card.Title>
-                <Card.Body>
-                  <Card.Text>name: {user.name}</Card.Text>
-                  <Card.Text>username: {user.username}</Card.Text>
-                </Card.Body>
+                <Card.Title>name: {user.name}</Card.Title>
+                <Card.Title>username: {user.username}</Card.Title>
               </Stack>
             </Stack>
+            <Button
+              variant="secondary"
+              className="position-absolute end-0 "
+              onClick={() => navigate("/")}
+            >
+              Back
+            </Button>
           </Card>
 
           <h2 style={{ textAlign: "center" }}>{user.name} posts:</h2>

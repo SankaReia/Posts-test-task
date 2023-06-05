@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Container, Nav, Navbar, Image, Offcanvas } from "react-bootstrap";
-import logo from "../logo.jpg";
+import logo from "../img/logo.jpg";
 import { useNavigate } from "react-router-dom";
 
 const NavBar: FC = () => {

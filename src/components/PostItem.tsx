@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Card, Image, Stack } from "react-bootstrap";
-import userLogo from "../userLogo.png";
+import userLogo from "../img/userLogo.png";
 import Comments from "./Comments";
 import { useNavigate } from "react-router-dom";
 import { PostI } from "../utils/postConsts";

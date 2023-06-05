@@ -23,6 +23,6 @@ export default function userReducer(state = initialState, action: ActionI): user
 }
 }
 
-export const getUser = (payload: any) =>  ({type: ActionType.GET_USER, payload})
+export const getUser = (payload: string) =>  ({type: ActionType.GET_USER, payload})
 export const setUser = (payload: any) =>  ({type: ActionType.SET_USER, payload})
 export const setUserPosts = (payload: any) =>  ({type: ActionType.SET_USER_POSTS, payload})
