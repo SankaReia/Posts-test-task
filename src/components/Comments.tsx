@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Card, Spinner } from "react-bootstrap";
-import { fetchComments } from "../store/http";
+import { fetchComments } from "../api/http";
 import { CommentI } from "../utils/postConsts";
 import { useFetching } from "../hooks/useFetching";
 
@@ -31,7 +31,7 @@ const Comments: FC<CommentsProp> = ({ postId }) => {
         </div>
       ) : (
         comments.map((comment) => (
-          <div style={{ padding: "0 20px" }}>
+          <div style={{ padding: "0 20px" }} key={comment.id}>
             <hr style={{ margin: " 5px 0" }} />
             <Card.Title>{comment.email}</Card.Title>
             <Card.Text style={{ marginLeft: 20 }}>{comment.body}</Card.Text>
