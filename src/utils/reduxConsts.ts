@@ -8,7 +8,10 @@ export enum ActionType {
    SET_USER_POSTS = 'SET_USER_POSTS',
    GET_USER = 'GET_USER',
    SET_USER = 'SET_USER',
+   SET_ERROR_POST = 'SET_ERROR_POST',
+   SET_ERROR_USER = 'SET_ERROR_USER',
 }
+
 
 export interface ActionI {
     type: string;

@@ -6,6 +6,7 @@ import postReducer from './reducers/postReducer'
 import loadReducer from './reducers/loadReducer'
 import commentReducer from './reducers/commentReducer'
 import userReducer from './reducers/userReducer'
+import errorReducer from './reducers/errorReducer'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     commentReducer,
     loadReducer,
     userReducer,
+    errorReducer
 })
 
 export const store = createStore(rootReducer, applyMiddleware(sagaMiddleware))

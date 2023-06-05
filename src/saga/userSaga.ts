@@ -11,15 +11,20 @@ const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
 
 function* getUserWorker (action: any) {
-    yield put (setLoadingPost(true))
-    yield delay(500)
-
-    const user: Promise<any> = yield call(fetchUser, action.payload)
-    yield put(setUser(user))
-
-    const userPosts: Promise<any> = yield call(fetchUserPosts, action.payload)
-    yield put(setUserPosts(userPosts))
-    yield put (setLoadingPost(false))
+    try {
+        yield put (setLoadingPost(true))
+        yield delay(500)
+    
+        const user: Promise<any> = yield call(fetchUser, action.payload)
+        yield put(setUser(user))
+    
+        const userPosts: Promise<any> = yield call(fetchUserPosts, action.payload)
+        yield put(setUserPosts(userPosts))
+        yield put (setLoadingPost(false))
+        
+    } catch (error: any) {
+        yield put({type: ActionType.SET_ERROR_USER, payload: 'Error fetching user'})
+    }
 }
 
 export function* userWatcher () {

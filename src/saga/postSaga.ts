@@ -11,11 +11,18 @@ const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
 
 function* getPostWorker (action: any) {
-    yield put (setLoadingPost(true))
-    yield delay(500)
-    const response: Promise<any> = yield call(fetchPosts, action.payload)
-    yield put(setPosts(response))
-    yield put (setLoadingPost(false))
+
+    try {
+        yield put (setLoadingPost(true))
+        yield delay(500)
+        const response: Promise<any> = yield call(fetchPosts, action.payload)
+        yield put(setPosts(response))
+        yield put (setLoadingPost(false))
+        
+    } catch (e) {
+        yield put({type: ActionType.SET_ERROR_POST, payload: "Error fetching posts"})
+
+    }
 }
 
 export function* postWatcher () {

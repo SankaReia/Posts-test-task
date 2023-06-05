@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../hooks/useRedux";
-import { Card, Spinner, Stack, Image, Button } from "react-bootstrap";
+import { Card, Spinner, Stack, Image, Button, Alert } from "react-bootstrap";
 import PostItem from "../components/PostItem";
 import { getUser } from "../store/reducers/userReducer";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,6 +12,8 @@ const UserPage: FC = () => {
   const navigate = useNavigate();
   const { userPosts, user } = useTypedSelector((state) => state.userReducer);
   const { isLoadingPost } = useTypedSelector((state) => state.loadReducer);
+  const { errorUser } = useTypedSelector((state) => state.errorReducer);
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -57,6 +59,12 @@ const UserPage: FC = () => {
             ))}
           </div>
         </>
+      )}
+
+      {errorUser !== "" && (
+        <Alert className="alert alert-danger" role="alert">
+          {errorUser}
+        </Alert>
       )}
     </>
   );

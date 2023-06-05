@@ -3,7 +3,7 @@ import { usePosts } from "../hooks/usePosts";
 import PostItem from "../components/PostItem";
 import PostFilter from "../components/PostFilter";
 import { FilterI } from "../utils/postConsts";
-import { Pagination, Spinner } from "react-bootstrap";
+import { Alert, Pagination, Spinner } from "react-bootstrap";
 import { getPageCount, getPagesArray } from "../utils/pages";
 import { useTypedSelector } from "../hooks/useRedux";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,8 @@ const limit = 10;
 const PostsPage: FC = () => {
   const dispatch = useDispatch();
   const { posts } = useTypedSelector((state) => state.postReducer);
+  const { errorPost } = useTypedSelector((state) => state.errorReducer);
+
   const { isLoadingPost } = useTypedSelector((state) => state.loadReducer);
 
   const [page, setPage] = useState(1);
@@ -70,6 +72,12 @@ const PostsPage: FC = () => {
             ))}
           </Pagination>
         </div>
+      )}
+
+      {errorPost !== "" && (
+        <Alert className="alert alert-danger" role="alert">
+          {errorPost}
+        </Alert>
       )}
     </>
   );
