@@ -14,3 +14,8 @@ export const fetchComments = async (postId: string) => {
     const {data} = await axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
     return data
 }
+
+export const fetchUserPosts = async (userId: string) => {
+    const {data} = await axios.get(`https://jsonplaceholder.typicode.com/posts?userId=` + userId)
+    return data
+}
