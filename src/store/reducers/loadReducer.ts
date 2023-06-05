@@ -1,21 +1,26 @@
-import { ActionI, SET_LOADING } from "../../utils/reduxConsts"
+import { ActionI, ActionType } from "../../utils/reduxConsts"
 
 interface LoadI {
-    isLoading: boolean
+    isLoadingPost: boolean
+    isLoadingComm: boolean
 }
 
 const initialState: LoadI = {
-    isLoading: false
+    isLoadingPost: false,
+    isLoadingComm: false
 }
 
 export default function loadReducer (state = initialState, action: ActionI): LoadI {
     switch (action.type) {
         
-        case SET_LOADING:
-            return {...state, isLoading: action.payload}
+        case ActionType.SET_LOADING_POSTS:
+            return {...state, isLoadingPost: action.payload}
+        case ActionType.SET_LOADING_COMMENTS:
+            return {...state, isLoadingComm: action.payload}
         default: 
             return state
 }
 }
 
-export const setLoading = (payload: any) =>  ({type:SET_LOADING, payload})
+export const setLoadingPost = (payload: any) =>  ({type:ActionType.SET_LOADING_POSTS, payload})
+export const setLoadingComm = (payload: any) =>  ({type:ActionType.SET_LOADING_COMMENTS, payload})

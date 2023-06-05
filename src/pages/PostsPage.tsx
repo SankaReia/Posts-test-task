@@ -7,24 +7,27 @@ import { Pagination, Spinner } from "react-bootstrap";
 import { getPageCount, getPagesArray } from "../utils/pages";
 import { useTypedSelector } from "../hooks/useRedux";
 import { useDispatch } from "react-redux";
-import { gethPosts } from "../store/reducers/postReducer";
+import { getPosts } from "../store/reducers/postReducer";
 
 const limit = 10;
 
 const PostsPage: FC = () => {
   const dispatch = useDispatch();
   const { posts } = useTypedSelector((state) => state.postReducer);
-  const { isLoading } = useTypedSelector((state) => state.loadReducer);
+  const { isLoadingPost } = useTypedSelector((state) => state.loadReducer);
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [totalCount, setTotalCount] = useState(100);
   const [filter, setFilter] = useState<FilterI>({
     sort: "",
     query: "",
   });
 
   useEffect(() => {
-    dispatch(gethPosts({ limit, page }));
+    dispatch(getPosts({ limit, page }));
+
+    setTotalCount(posts.headers["x-total-count"]);
     setTotalPages(getPageCount(totalCount, limit));
   }, []);
 
@@ -34,11 +37,10 @@ const PostsPage: FC = () => {
     filter.query
   );
 
-  const totalCount = posts.headers["x-total-count"];
   let pagesArr = getPagesArray(totalPages);
 
   const changePage = (page: number) => {
-    dispatch(gethPosts({ limit, page }));
+    dispatch(getPosts({ limit, page }));
     setPage(page);
   };
 
@@ -46,7 +48,7 @@ const PostsPage: FC = () => {
     <>
       <PostFilter filter={filter} setFilter={setFilter} />
 
-      {isLoading ? (
+      {isLoadingPost ? (
         <div style={{ textAlign: "center", marginTop: 100 }}>
           <Spinner animation="border" role="status">
             <span className="visually-hidden">Loading...</span>

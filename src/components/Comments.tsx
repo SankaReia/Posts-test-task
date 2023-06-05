@@ -1,29 +1,14 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { Card, Spinner } from "react-bootstrap";
-import { fetchComments } from "../api/http";
-import { CommentI } from "../utils/postConsts";
-import { useFetching } from "../hooks/useFetching";
+import { useTypedSelector } from "../hooks/useRedux";
 
-interface CommentsProp {
-  postId: string;
-}
-
-const Comments: FC<CommentsProp> = ({ postId }) => {
-  const [comments, setComments] = useState<CommentI[]>([]);
-
-  const [getComments, isLoading, error] = useFetching(
-    async (postId: string) => {
-      fetchComments(postId as string).then((comments) => setComments(comments));
-    }
-  );
-
-  useEffect(() => {
-    getComments(postId);
-  }, []);
+const Comments: FC = () => {
+  const { comments } = useTypedSelector((state) => state.commentReducer);
+  const { isLoadingComm } = useTypedSelector((state) => state.loadReducer);
 
   return (
     <>
-      {isLoading ? (
+      {isLoadingComm ? (
         <div style={{ textAlign: "center" }}>
           <Spinner animation="border" role="status">
             <span className="visually-hidden">Loading...</span>

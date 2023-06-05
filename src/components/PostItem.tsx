@@ -4,14 +4,22 @@ import userLogo from "../userLogo.png";
 import Comments from "./Comments";
 import { useNavigate } from "react-router-dom";
 import { PostI } from "../utils/postConsts";
+import { useDispatch } from "react-redux";
+import { getComments } from "../store/reducers/commentReducer";
 
 interface PostItemProp {
   post: PostI;
 }
 
 const PostItem: FC<PostItemProp> = ({ post }) => {
+  const dispatch = useDispatch();
   const [onComment, setOnComment] = useState(false);
   const navigate = useNavigate();
+
+  const commentHandler = () => {
+    setOnComment((prev) => !prev);
+    dispatch(getComments(post.id));
+  };
 
   return (
     <Card style={{ maxWidth: "800px", width: "100%" }} className="mt-3 mx-auto">
@@ -30,12 +38,12 @@ const PostItem: FC<PostItemProp> = ({ post }) => {
         <span
           className="material-symbols-outlined"
           style={{ cursor: "pointer" }}
-          onClick={() => setOnComment((prev) => !prev)}
+          onClick={commentHandler}
         >
           comment
         </span>
       </Card.Body>
-      {onComment && <Comments postId={post.id} />}
+      {onComment && <Comments />}
     </Card>
   );
 };

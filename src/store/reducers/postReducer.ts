@@ -1,4 +1,4 @@
-import { ActionI, GET_POSTS, SET_POSTS } from "../../utils/reduxConsts"
+import { ActionI,ActionType } from "../../utils/reduxConsts"
 import { PostI } from "../../utils/postConsts"
 
 interface PostStateI {
@@ -16,12 +16,12 @@ const initialState: PostStateI = {
 export default function postReducer(state = initialState, action: ActionI): PostStateI {
     switch (action.type) {
         
-        case SET_POSTS:
+        case ActionType.SET_POSTS:
             return {...state, posts: action.payload}
         default: 
             return state
 }
 }
 
-export const setPosts = (payload: any) =>  ({type:SET_POSTS, payload})
-export const gethPosts = (payload: any) =>  ({type:GET_POSTS, payload})
+export const setPosts = (payload: any) =>  ({type:ActionType.SET_POSTS, payload})
+export const getPosts = (payload: any) =>  ({type:ActionType.GET_POSTS, payload})
