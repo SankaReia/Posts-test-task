@@ -1,38 +1,19 @@
+import { ActionI, GET_POSTS, SET_POSTS } from "../../utils/reduxConsts"
 import { PostI } from "../../utils/postConsts"
-
-export const FETCH_POSTS = 'FETCH_POSTS'
-export const SET_POSTS = 'SET_POSTS'
-export const FETCH_POSTS_SUCCESS = 'SET_POSTS_SUCCESS'
-export const FETCH_POSTS_ERROR = 'SET_POSTS_ERROR'
 
 interface PostStateI {
     posts: {
         data: PostI[],
         headers: any,
-    }
-    loading: boolean;
-    error: null | string
-}
-
-interface PostAction {
-    type: string;
-    payload?: any
-}
-
+    }}
 
 const initialState: PostStateI = {
     posts: {
         data: [],
         headers: {}
-    },
-    loading: false,
-    error: null
+    }}
 
-}
-
-
-
-export default function postReducer(state = initialState, action: PostAction): PostStateI {
+export default function postReducer(state = initialState, action: ActionI): PostStateI {
     switch (action.type) {
         
         case SET_POSTS:
@@ -42,6 +23,5 @@ export default function postReducer(state = initialState, action: PostAction): P
 }
 }
 
-
-export const setPostsCreator = (payload: any) =>  ({type:SET_POSTS, payload})
-export const fetchPostsCreator = (payload: any) =>  ({type:FETCH_POSTS, payload})
+export const setPosts = (payload: any) =>  ({type:SET_POSTS, payload})
+export const gethPosts = (payload: any) =>  ({type:GET_POSTS, payload})

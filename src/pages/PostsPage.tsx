@@ -1,21 +1,20 @@
 import { FC, useEffect, useState } from "react";
 import { usePosts } from "../hooks/usePosts";
 import PostItem from "../components/PostItem";
-import { fetchPosts } from "../api/http";
 import PostFilter from "../components/PostFilter";
-import { FilterI, PostI } from "../utils/postConsts";
-import { Button, Pagination, Spinner } from "react-bootstrap";
+import { FilterI } from "../utils/postConsts";
+import { Pagination, Spinner } from "react-bootstrap";
 import { getPageCount, getPagesArray } from "../utils/pages";
-import { useFetching } from "../hooks/useFetching";
 import { useTypedSelector } from "../hooks/useRedux";
 import { useDispatch } from "react-redux";
-import { fetchPostsCreator } from "../store/reducers/postReducer";
+import { gethPosts } from "../store/reducers/postReducer";
 
 const limit = 10;
 
 const PostsPage: FC = () => {
   const dispatch = useDispatch();
-  const { posts, loading } = useTypedSelector((state) => state.postReducer);
+  const { posts } = useTypedSelector((state) => state.postReducer);
+  const { isLoading } = useTypedSelector((state) => state.loadReducer);
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -23,6 +22,11 @@ const PostsPage: FC = () => {
     sort: "",
     query: "",
   });
+
+  useEffect(() => {
+    dispatch(gethPosts({ limit, page }));
+    setTotalPages(getPageCount(totalCount, limit));
+  }, []);
 
   const sortedAndSearchedPosts = usePosts(
     posts.data,
@@ -33,13 +37,8 @@ const PostsPage: FC = () => {
   const totalCount = posts.headers["x-total-count"];
   let pagesArr = getPagesArray(totalPages);
 
-  useEffect(() => {
-    dispatch(fetchPostsCreator({ limit, page }));
-    setTotalPages(getPageCount(totalCount, limit));
-  }, []);
-
   const changePage = (page: number) => {
-    dispatch(fetchPostsCreator({ limit, page }));
+    dispatch(gethPosts({ limit, page }));
     setPage(page);
   };
 
@@ -47,7 +46,7 @@ const PostsPage: FC = () => {
     <>
       <PostFilter filter={filter} setFilter={setFilter} />
 
-      {loading ? (
+      {isLoading ? (
         <div style={{ textAlign: "center", marginTop: 100 }}>
           <Spinner animation="border" role="status">
             <span className="visually-hidden">Loading...</span>
