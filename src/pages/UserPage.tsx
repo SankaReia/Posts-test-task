@@ -30,25 +30,21 @@ const UserPage: FC = () => {
         </div>
       ) : (
         <>
+          <Button variant="secondary" onClick={() => navigate("/")}>
+            Back
+          </Button>
           <Card
             style={{ maxWidth: "800px", width: "100%" }}
             className="p-2 mx-auto position-relative"
           >
             <Stack direction="horizontal" gap={2}>
-              <Image src={userLogo} width="200" />
+              <Image src={userLogo} width="150" />
               <Stack>
                 <Card.Title>email: {user.email}</Card.Title>
                 <Card.Title>name: {user.name}</Card.Title>
                 <Card.Title>username: {user.username}</Card.Title>
               </Stack>
             </Stack>
-            <Button
-              variant="secondary"
-              className="position-absolute end-0 "
-              onClick={() => navigate("/")}
-            >
-              Back
-            </Button>
           </Card>
 
           <h2 style={{ textAlign: "center" }}>{user.name} posts:</h2>
