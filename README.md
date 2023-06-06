@@ -1,4 +1,5 @@
 # Test-Task Posts
+## The page with posts is a test task using the free fake API {JSON} Placeholder
 
 Demo - https://posts-test-task-58na9rp0i-sankareia.vercel.app/
 
